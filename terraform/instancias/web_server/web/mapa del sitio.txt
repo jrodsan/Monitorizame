@@ -1,0 +1,22 @@
+/var/www/html/
+│
+├── index.php                ← Página principal (home o login)
+├── register.php             ← Formulario de registro
+├── login.php                ← Formulario de login
+├── logout.php               ← Cierra la sesión
+├── dashboard/               ← Carpeta para las páginas tras iniciar sesión
+│   ├── index.php            ← Panel principal con sensores
+│   ├── add_sensor.php       ← Añadir sensor
+│   ├── config.php           ← Configuraciones
+│   └── includes/            ← Archivos compartidos en dashboard
+│       ├── header.php
+│       └── footer.php
+│
+├── includes/                ← Archivos PHP reutilizables
+│   ├── db.php               ← Conexión a base de datos
+│   └── auth.php             ← Comprobación de sesión
+│
+├── assets/                  ← CSS, JS, imágenes, etc.
+│   ├── css/
+│   ├── js/
+│   └── img/
