@@ -1,0 +1,9 @@
+docker exec -it timescaledb psql -U admin -d sensordata
+
+Python raspberry, entrar en entorno virtualizado 
+
+source venv/bin/activate
+
+sacar el numero de serie de la cpu
+
+cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2

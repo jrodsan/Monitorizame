@@ -1,9 +1,4 @@
 <?php
-session_start();
-if (!isset($_SESSION['usuario_id'])) {
-    header("Location: login.php");
-    exit;
-}
 
 include('../includes/db.php');
 include('../includes/header.php');
@@ -68,6 +63,7 @@ foreach ($raspberries as $raspberry) {
             <?php endforeach; ?>
         </ul>
         <a href="add_sensores.php" class="btn btn-primary btn-sm">Añadir nuevo sensor</a>
+        <a href="add_raspberry.php" class="btn btn-primary btn-sm">Añadir nueva raspberry</a>
         <a href="configuraciones.php" class="btn btn-secondary btn-sm">Ver configuraciones</a>
         <a href="logout.php" class="btn btn-danger btn-sm">Cerrar sesión</a>
     </div>
