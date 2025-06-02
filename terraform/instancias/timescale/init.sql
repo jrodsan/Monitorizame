@@ -12,18 +12,18 @@ CREATE TABLE usuarios (
 
 -- Tabla de Raspberry Pi
 CREATE TABLE raspberry_pi (
-    id_raspberry SERIAL PRIMARY KEY,
+    id_raspberry SERIAL PRIMARY KEY,  
     id_usuario INT REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
-    identificador_unico VARCHAR(100) UNIQUE NOT NULL,
     nombre VARCHAR(100),
+    descripcion TEXT,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabla de sensores
 CREATE TABLE sensores (
-    id_sensor SERIAL PRIMARY KEY,
+    id_sensor SERIAL PRIMARY KEY,  
     id_raspberry INT REFERENCES raspberry_pi(id_raspberry) ON DELETE CASCADE,
-    tipo VARCHAR(50) NOT NULL, -- temperatura, humedad, luz, etc.
+    tipo VARCHAR(50) NOT NULL,
     descripcion TEXT
 );
 
@@ -36,7 +36,6 @@ CREATE TABLE lecturas (
     PRIMARY KEY (id_sensor, fecha_hora)
 );
 
-
 -- Convertir tabla de lecturas en hypertable (solo si estás usando TimescaleDB)
 SELECT create_hypertable('lecturas', 'fecha_hora', if_not_exists => TRUE);
 
@@ -44,7 +43,7 @@ SELECT create_hypertable('lecturas', 'fecha_hora', if_not_exists => TRUE);
 CREATE TABLE configuraciones (
     id_configuracion SERIAL PRIMARY KEY,
     id_sensor INT REFERENCES sensores(id_sensor) ON DELETE CASCADE,
-    nombre VARCHAR(100) NOT NULL,
+    nombre VARCHAR(100) NOT NULL, --poner nombre?
     umbral_min FLOAT,
     umbral_max FLOAT,
     alerta_activada BOOLEAN DEFAULT TRUE
@@ -73,4 +72,4 @@ CREATE TABLE fotos (
     id_raspberry INT REFERENCES raspberry_pi(id_raspberry) ON DELETE CASCADE,
     url_foto TEXT NOT NULL, -- puede ser una URL o ruta de archivo local
     fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-); 
+);
