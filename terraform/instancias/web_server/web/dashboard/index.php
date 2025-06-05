@@ -1,8 +1,8 @@
 <?php
-
+require_once('../includes/auth.php');
 include('../includes/db.php');
 include('../includes/header.php');
-require_once('../includes/auth.php');
+
 
 // Obtener sensores del usuario a través de las Raspberry Pi asociadas
 $sql = "
