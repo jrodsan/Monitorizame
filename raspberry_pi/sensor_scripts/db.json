@@ -1,0 +1,7 @@
+{
+    "host": "54.144.201.143",
+    "dbname": "sensordata",
+    "user": "admin",
+    "password": "admin",
+    "port": "5432"
+}
