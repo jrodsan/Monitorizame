@@ -1,5 +1,5 @@
 <?php
-$host = '10.0.1.4';     // IP del contenedor o servidor PostgreSQL
+$host = '10.0.1.44';     // IP del contenedor o servidor PostgreSQL
 $port = '5432';
 $dbname = 'sensordata';
 $user = 'admin';

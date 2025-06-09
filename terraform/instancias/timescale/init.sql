@@ -7,6 +7,7 @@ CREATE TABLE usuarios (
     nombre_usuario VARCHAR(50) UNIQUE NOT NULL,
     contrasena VARCHAR(255) NOT NULL, -- Debe estar hasheada con bcrypt u otro algoritmo
     nombre_completo VARCHAR(100),
+    chat_id_telegram BIGINT,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

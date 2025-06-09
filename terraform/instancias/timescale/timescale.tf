@@ -76,6 +76,7 @@ resource "aws_instance" "timescaledb_server" {
   vpc_security_group_ids      = [aws_security_group.timescaledb_sg.id]
   key_name                    = aws_key_pair.timescaledb_key_pair.key_name
   associate_public_ip_address = true
+  private_ip                  = "10.0.1.44"
 
   # Arranca el contenedor con Docker y deja init.sql copiado
   user_data = <<-EOF
@@ -113,6 +114,34 @@ resource "aws_instance" "timescaledb_server" {
   provisioner "file" {
     source      = "init.sql"
     destination = "/home/ubuntu/init.sql"
+
+    connection {
+      type        = "ssh"
+      host        = self.public_ip
+      user        = "ubuntu"
+      private_key = local_file.timescaledb_private_key_file.content
+    }
+  }
+
+   # Subir script de backup
+  provisioner "file" {
+    source      = "backup_script.sh"
+    destination = "/home/ubuntu/backup_script.sh"
+
+    connection {
+      type        = "ssh"
+      host        = self.public_ip
+      user        = "ubuntu"
+      private_key = local_file.timescaledb_private_key_file.content
+    }
+  }
+
+  # Configurar cron
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /home/ubuntu/backup_script.sh",
+      "(crontab -l 2>/dev/null; echo '0 2 * * * /home/ubuntu/backup_script.sh') | crontab -"
+    ]
 
     connection {
       type        = "ssh"

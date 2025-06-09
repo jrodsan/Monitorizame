@@ -55,16 +55,24 @@ foreach ($raspberries as $raspberry) {
     <div class="mb-4">
         <h2>Tus sensores:</h2>
         <ul class="list-group mb-3">
-            <?php foreach ($sensores as $sensor): ?>
-                <li class="list-group-item">
-                    <strong>Sensor:</strong> <?php echo htmlspecialchars($sensor['tipo']); ?>
-                    <span class="text-muted">(Raspberry: <?php echo htmlspecialchars($sensor['nombre_pi']); ?>)</span>
-                </li>
-            <?php endforeach; ?>
+            <?php if (!empty($sensores)): ?>
+                <?php foreach ($sensores as $sensor): ?>
+                    <li class="list-group-item">
+                        <strong>Sensor #<?php echo htmlspecialchars($sensor['id_sensor']); ?>:</strong>
+                        <?php echo htmlspecialchars($sensor['tipo']); ?>
+                        <span class="text-muted">(Raspberry: <?php echo htmlspecialchars($sensor['nombre_pi']); ?>)</span>
+                    </li>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <li>No hay sensores disponibles.</li>
+            <?php endif; ?>
+
         </ul>
         <a href="add_sensores.php" class="btn btn-primary btn-sm">Añadir nuevo sensor</a>
         <a href="add_raspberry.php" class="btn btn-primary btn-sm">Añadir nueva raspberry</a>
+        <a href="chat_id.php" class="btn btn-primary btn-sm">Añadir chat ID</a>
         <a href="configuraciones.php" class="btn btn-secondary btn-sm">Ver configuraciones</a>
+        <a href="remove_raspberry.php" class="btn btn-danger btn-sm">Eliminar una raspberry pi</a>
         <a href="logout.php" class="btn btn-danger btn-sm">Cerrar sesión</a>
     </div>
 

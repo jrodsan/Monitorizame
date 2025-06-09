@@ -83,6 +83,7 @@ resource "aws_instance" "sftp_server" {
   vpc_security_group_ids      = [aws_security_group.sg_sftp.id]
   key_name                    = aws_key_pair.ec2_key_pair.key_name
   associate_public_ip_address = true
+  private_ip                  = "10.0.1.32"
 
   user_data = <<-EOF
             #!/bin/bash
@@ -108,7 +109,7 @@ resource "aws_instance" "sftp_server" {
               -p 2022:22 \
               --restart unless-stopped \
               -v /sftp/ubuntu:/home/ubuntu \
-              -e SFTP_USERS="ubuntu:1000:1000" \
+              -e SFTP_USERS="admin:admin" \
               atmoz/sftp
             EOF
 
