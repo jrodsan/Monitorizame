@@ -71,7 +71,8 @@ foreach ($raspberries as $raspberry) {
         <a href="add_sensores.php" class="btn btn-primary btn-sm">Añadir nuevo sensor</a>
         <a href="add_raspberry.php" class="btn btn-primary btn-sm">Añadir nueva raspberry</a>
         <a href="chat_id.php" class="btn btn-primary btn-sm">Añadir chat ID</a>
-        <a href="configuraciones.php" class="btn btn-secondary btn-sm">Ver configuraciones</a>
+        <a href="add_configuracion.php" class="btn btn-primary btn-sm">Añadir Configuración</a>
+        <a href="show_conf.php.php" class="btn btn-secondary btn-sm">Ver configuraciones</a>
         <a href="remove_raspberry.php" class="btn btn-danger btn-sm">Eliminar una raspberry pi</a>
         <a href="logout.php" class="btn btn-danger btn-sm">Cerrar sesión</a>
     </div>

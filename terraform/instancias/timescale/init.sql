@@ -67,6 +67,7 @@ CREATE TABLE eventos (
     fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
 -- Tabla de fotos del huerto
 CREATE TABLE fotos (
     id_foto SERIAL PRIMARY KEY,
@@ -74,3 +75,57 @@ CREATE TABLE fotos (
     url_foto TEXT NOT NULL, -- puede ser una URL o ruta de archivo local
     fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+-- Tabla de alertas activas/históricas
+CREATE TABLE alertas (
+    id_alerta SERIAL PRIMARY KEY,
+    id_sensor INT REFERENCES sensores(id_sensor) ON DELETE CASCADE,
+    estado BOOLEAN NOT NULL, -- TRUE = activa, FALSE = finalizada
+    fecha_inicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_fin TIMESTAMP
+);
+
+
+-- Función para gestionar alertas en base a lecturas
+CREATE OR REPLACE FUNCTION verificar_alerta()
+RETURNS TRIGGER AS $$
+DECLARE
+    conf RECORD;
+    alerta_existente RECORD;
+BEGIN
+    -- Buscar configuración del sensor
+    SELECT * INTO conf FROM configuraciones WHERE id_sensor = NEW.id_sensor;
+
+    -- Si no hay configuración, no hacemos nada
+    IF NOT FOUND THEN
+        RETURN NEW;
+    END IF;
+
+    -- Verificar si el valor está fuera de los umbrales definidos
+    IF NEW.valor < conf.umbral_min OR NEW.valor > conf.umbral_max THEN
+        -- Revisar si ya hay una alerta activa
+        SELECT * INTO alerta_existente FROM alertas
+        WHERE id_sensor = NEW.id_sensor AND estado = TRUE;
+
+        -- Si no existe, creamos una nueva alerta activa
+        IF NOT FOUND THEN
+            INSERT INTO alertas (id_sensor, estado) VALUES (NEW.id_sensor, TRUE);
+        END IF;
+    ELSE
+        -- Si el valor vuelve al rango normal, cerramos alerta si estaba activa
+        UPDATE alertas
+        SET estado = FALSE, fecha_fin = now()
+        WHERE id_sensor = NEW.id_sensor AND estado = TRUE;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Trigger que llama a la función tras insertar una lectura
+CREATE TRIGGER trigger_verificar_alerta
+AFTER INSERT ON lecturas
+FOR EACH ROW
+EXECUTE FUNCTION verificar_alerta();
