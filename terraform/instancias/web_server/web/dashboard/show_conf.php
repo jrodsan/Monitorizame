@@ -57,7 +57,7 @@ $configuraciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php endif; ?>
 
     <div class="d-flex gap-2">
-        <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
         <a href="index.php" class="btn btn-secondary">Volver al Dashboard</a>
     </div>
 </div>
