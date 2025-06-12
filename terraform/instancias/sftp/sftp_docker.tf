@@ -85,33 +85,43 @@ resource "aws_instance" "sftp_server" {
   associate_public_ip_address = true
   private_ip                  = "10.0.1.32"
 
-  user_data = <<-EOF
-            #!/bin/bash
-            exec > /var/log/user-data.log 2>&1
-            set -eux
+    user_data = <<-EOF
+     #!/bin/bash
+      set -eux
+      exec > /var/log/user-data.log 2>&1
 
-            apt-get update -y
-            apt-get install -y docker.io
+      apt-get update -y
+      apt-get install -y docker.io
 
-            systemctl enable docker
-            systemctl start docker
+      systemctl enable docker
+      systemctl start docker
 
-            # Crear estructura necesaria
-            mkdir -p /sftp/ubuntu/.ssh
-            echo "${tls_private_key.sftp_key.public_key_openssh}" > /sftp/ubuntu/.ssh/authorized_keys
-            chown -R 1000:1000 /sftp/ubuntu
-            chmod 700 /sftp/ubuntu/.ssh
-            chmod 600 /sftp/ubuntu/.ssh/authorized_keys
+      # Crear estructura para volumen SFTP
+      mkdir -p /sftp/admin/upload
 
-            # Ejecutar contenedor SFTP
-            docker run -d \
-              --name sftp-server \
-              -p 2022:22 \
-              --restart unless-stopped \
-              -v /sftp/ubuntu:/home/ubuntu \
-              -e SFTP_USERS="admin:admin" \
-              atmoz/sftp
-            EOF
+      # Añadir clave pública directamente en authorized_keys
+      mkdir -p /sftp/admin/.ssh
+      echo "${tls_private_key.sftp_key.public_key_openssh}" > /sftp/admin/.ssh/authorized_keys
+
+      # Asignar permisos correctos
+      chown -R 1000:1000 /sftp/admin
+      chmod 700 /sftp/admin/.ssh
+      chmod 600 /sftp/admin/.ssh/authorized_keys
+
+      # Ejecutar contenedor SFTP con soporte de clave pública
+      docker run -d \
+        --name sftp-server \
+        -p 2022:22 \
+        --restart unless-stopped \
+        -v /sftp/admin:/home/admin \
+        -e SFTP_USERS="admin:1000:1000" \
+        -e PUBLIC_KEY_FILE=.ssh/authorized_keys \
+        atmoz/sftp
+
+
+        
+    EOF
+
 
 
   tags = {

@@ -51,6 +51,11 @@ resource "aws_security_group" "timescaledb_sg" {
   }
 }
 
+# Clave SFTP (usada para conectar desde TimescaleDB a SFTP)
+data "local_file" "sftp_key" {
+  filename = "${path.module}/../ftp/sftp-user-key.pem"
+}
+
 # Generar clave SSH
 resource "tls_private_key" "timescaledb_key" {
   algorithm = "RSA"
@@ -78,7 +83,6 @@ resource "aws_instance" "timescaledb_server" {
   associate_public_ip_address = true
   private_ip                  = "10.0.1.44"
 
-  # Arranca el contenedor con Docker y deja init.sql copiado
   user_data = <<-EOF
     #!/bin/bash
     set -eux
@@ -90,6 +94,10 @@ resource "aws_instance" "timescaledb_server" {
 
     systemctl enable docker
     systemctl start docker
+
+    # Añadir usuario ubuntu al grupo docker
+    usermod -aG docker ubuntu
+    newgrp docker
 
     # Descargar e iniciar TimescaleDB
     docker run -d \
@@ -110,7 +118,7 @@ resource "aws_instance" "timescaledb_server" {
     fi
   EOF
 
-  # Copiar el archivo init.sql desde la máquina local
+  # Copiar el archivo init.sql
   provisioner "file" {
     source      = "init.sql"
     destination = "/home/ubuntu/init.sql"
@@ -123,7 +131,7 @@ resource "aws_instance" "timescaledb_server" {
     }
   }
 
-   # Subir script de backup
+  # Subir script de backup
   provisioner "file" {
     source      = "backup_script.sh"
     destination = "/home/ubuntu/backup_script.sh"
@@ -136,10 +144,24 @@ resource "aws_instance" "timescaledb_server" {
     }
   }
 
-  # Configurar cron
+  # Copiar clave PEM del usuario SFTP
+  provisioner "file" {
+    content     = data.local_file.sftp_key.content
+    destination = "/home/ubuntu/.ssh/sftp-user-key.pem"
+
+    connection {
+      type        = "ssh"
+      host        = self.public_ip
+      user        = "ubuntu"
+      private_key = local_file.timescaledb_private_key_file.content
+    }
+  }
+
+  # Configuración remota: permisos y cron
   provisioner "remote-exec" {
     inline = [
       "chmod +x /home/ubuntu/backup_script.sh",
+      "chmod 600 /home/ubuntu/.ssh/sftp-user-key.pem",
       "(crontab -l 2>/dev/null; echo '0 2 * * * /home/ubuntu/backup_script.sh') | crontab -"
     ]
 
