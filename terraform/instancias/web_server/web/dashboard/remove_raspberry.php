@@ -1,6 +1,5 @@
 <?php
     include('../includes/auth.php'); 
-    include('../includes/db.php'); 
 
 // Eliminar Raspberry si se ha enviado el ID
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_raspberry'])) {
