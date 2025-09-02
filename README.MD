@@ -14,6 +14,32 @@ Este proyecto permite monitorear las condiciones ambientales de un huerto desde 
 * Backups diarios por SFTP mediante `cron`
 
 ---
+## 🛠️ Roadmap - Monitorízame  
+
+Este proyecto está en constante evolución. Estas son las mejoras que quiero ir implementando para hacerlo más completo, escalable y útil:  
+
+### 🌱 Corto plazo  
+- [ ] Automatización del riego según las condiciones del entorno  
+- [ ] Mejorar la visibilidad de los datos 
+- [ ] Opción de despliegue en local con **docker-compose** además de AWS  
+
+### 🌿 Medio plazo  
+- [ ] Implementar un **dashboard en Grafana** para análisis más completo  
+- [ ] Añadir API REST para exponer datos de sensores  
+- [ ] Optimización de la base de datos TimescaleDB para grandes volúmenes  
+
+### 🌳 Largo plazo  
+- [ ] Aplicación móvil para el monitoreo remoto  
+- [ ] Integración con servicios de alertas más avanzados (ej. Twilio, Email)  
+- [ ] Soporte para múltiples nodos de Raspberry Pi distribuidos  
+---
+
+
+---
+🤝 Contribuciones
+
+Este proyecto está en desarrollo y abierto a mejoras. ¡Las pull requests son bienvenidas!
+---
 
 ## ⚙️ Requisitos del Sistema
 
@@ -27,7 +53,7 @@ Este proyecto permite monitorear las condiciones ambientales de un huerto desde 
 
 ### Software
 
-* Raspberry Pi OS Lite (32 bits recomendado)
+* Raspberry Pi OS Lite 
 * Python 3 con:
 
   * `psycopg2-binary`
@@ -38,7 +64,6 @@ Este proyecto permite monitorear las condiciones ambientales de un huerto desde 
 * AWS EC2 + TimescaleDB
 * Telegram Bot API
 
----
 
 ## 📅 Instalación en Raspberry Pi
 
