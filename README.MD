@@ -32,7 +32,7 @@ Este proyecto está en constante evolución. Estas son las mejoras que quiero ir
 - [ ] Aplicación móvil para el monitoreo remoto  
 - [ ] Integración con servicios de alertas más avanzados (ej. Twilio, Email)  
 - [ ] Soporte para múltiples nodos de Raspberry Pi distribuidos  
----
+
 
 
 ---
