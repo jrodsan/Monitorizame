@@ -1,6 +1,8 @@
 # 🌿 Monitorizame - Sistema de Monitoreo de Cultivos
 
-Este proyecto permite monitorear las condiciones ambientales de un huerto desde cualquier parte del mundo usando sensores conectados a una Raspberry Pi. Los datos son almacenados en una base de datos TimescaleDB alojada en AWS, visualizados en una interfaz web y respaldados automáticamente.
+Monitorízame es un sistema IoT que permite monitorear en tiempo real las condiciones ambientales de un huerto desde cualquier parte del mundo 🌍.
+
+Los sensores conectados a una Raspberry Pi recogen datos que se almacenan en una base de datos TimescaleDB (PostgreSQL) desplegada en AWS. La información se visualiza en una interfaz web responsiva y se respalda de manera automática.
 
 ---
 
@@ -12,6 +14,8 @@ Este proyecto permite monitorear las condiciones ambientales de un huerto desde 
 * Interfaz web responsiva con Bootstrap + Chart.js
 * Notificaciones automáticas por Telegram
 * Backups diarios por SFTP mediante `cron`
+* Soporte para múltiples Raspberry Pi enviando datos a la misma base de datos
+
 
 ---
 ## 🛠️ Roadmap - Monitorízame  
@@ -32,8 +36,8 @@ Este proyecto está en constante evolución. Estas son las mejoras que quiero ir
 - [ ] Aplicación móvil para el monitoreo remoto  
 - [ ] Integración con servicios de alertas más avanzados (ej. Twilio, Email)  
 - [ ] Soporte para múltiples nodos de Raspberry Pi distribuidos  
-
-
+- [ ] Escalabilidad mejorada para soportar decenas de nodos simultáneos sin pérdida de datos  
+- [ ] Administración centralizada de nodos (añadir/quitar Raspberry Pi fácilmente)  
 
 ---
 🤝 Contribuciones
