@@ -23,6 +23,7 @@ Los sensores conectados a una Raspberry Pi recogen datos que se almacenan en una
 Este proyecto está en constante evolución. Estas son las mejoras que quiero ir implementando para hacerlo más completo, escalable y útil:  
 
 ### 🌱 Corto plazo  
+- [ ] API REST en Flask/FastAPI para leer y modificar sensor_conf.json
 - [ ] Automatización del riego según las condiciones del entorno  
 - [ ] Mejorar la visibilidad de los datos 
 - [ ] Opción de despliegue en local con **docker-compose** además de AWS  
